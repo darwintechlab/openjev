@@ -1,0 +1,51 @@
+{
+  "name": "opencode-openjev",
+  "version": "0.1.0",
+  "description": "Typed decisions for the Opencode harness via Jev (System One) or OpenJev equivalent — Choice/Noul/Score with calibrated probabilities, no text generation",
+  "keywords": ["opencode", "opencode-plugin", "jev", "typesafe", "system-one", "openjev", "typed-decisions", "structured-output"],
+  "license": "MIT",
+  "author": "OpenJev Contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/opencode-openjev.git"
+  },
+  "homepage": "https://github.com/anomalyco/opencode-openjev#readme",
+  "bugs": {
+    "url": "https://github.com/anomalyco/opencode-openjev/issues"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/**/*.test.mjs",
+    "test:mock": "JEV_BACKEND=mock node --test test/**/*.test.mjs",
+    "prepublishOnly": "npm run typecheck && npm run build && npm test",
+    "lint": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.0.0"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.0.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
