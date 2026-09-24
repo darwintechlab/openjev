@@ -1,8 +1,17 @@
 {
   "name": "opencode-openjev",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Typed decisions for the Opencode harness via Jev (System One) or OpenJev equivalent — Choice/Noul/Score with calibrated probabilities, no text generation",
-  "keywords": ["opencode", "opencode-plugin", "jev", "typesafe", "system-one", "openjev", "typed-decisions", "structured-output"],
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "jev",
+    "typesafe",
+    "system-one",
+    "openjev",
+    "typed-decisions",
+    "structured-output"
+  ],
   "license": "MIT",
   "author": "OpenJev Contributors",
   "repository": {
@@ -16,7 +25,13 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "skill", "README.md", "SETUP.md", "LICENSE"],
+  "files": [
+    "dist",
+    "skill",
+    "README.md",
+    "SETUP.md",
+    "LICENSE"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
