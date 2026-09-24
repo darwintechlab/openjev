@@ -16,7 +16,7 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": ["dist", "skill", "README.md", "LICENSE"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -29,6 +29,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test test/**/*.test.mjs",
     "test:mock": "JEV_BACKEND=mock node --test test/**/*.test.mjs",
+    "bench:eval": "node bench/eval.mjs",
     "prepublishOnly": "npm run typecheck && npm run build && npm test",
     "lint": "tsc --noEmit"
   },

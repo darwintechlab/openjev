@@ -1,0 +1,52 @@
+{"id":"route-01","family":"routing","state":"Help! My payouts have been failing for 3 days. Order #48281 has not cleared.","label":"billing","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-02","family":"routing","state":"Login loop after MFA - cannot access dashboard, 500 on /auth/callback","label":"technical","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-03","family":"routing","state":"What does the enterprise plan cost for 50 seats? Need a quote.","label":"sales","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-04","family":"routing","state":"WIN FREE CRYPTO click here to claim your prize now","label":"spam","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-05","family":"routing","state":"Refund for invoice INV-9921 - I was charged twice for the pro plan.","label":"billing","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-06","family":"routing","state":"API returns 429 even at 2 req/s; docs say the limit is 10 req/s. Repro curl attached.","label":"technical","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-07","family":"routing","state":"Can I upgrade mid-cycle and prorate the difference?","label":"sales","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-08","family":"routing","state":"You have been pre-approved for a loan - reply with your SSN to claim","label":"spam","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-09","family":"routing","state":"Payout webhook not firing for ACH - logs show 200 but no event was delivered.","label":"technical","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-10","family":"routing","state":"Billing address change for the next invoice - VAT ID updated to DE123456789.","label":"billing","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-11","family":"routing","state":"Invoice INV-9921 is overdue and the dashboard has also been slow all week.","label":"billing","difficulty":"ambiguous","source":"synthetic-seed"}
+{"id":"route-12","family":"routing","state":"Interested in SSO and SOC2 - is that an add-on or included in the enterprise plan?","label":"sales","difficulty":"medium","source":"synthetic-seed"}
+{"id":"route-13","family":"routing","state":"I was charged for seats we removed last month and the API is also timing out intermittently.","label":"billing","difficulty":"ambiguous","source":"synthetic-seed"}
+{"id":"route-14","family":"routing","state":"Unsubscribe me from these scammy promotional emails or I will report your domain.","label":"spam","difficulty":"medium","source":"synthetic-seed"}
+{"id":"tool-01","family":"tool","state":"Fix the typo recieve in README.md","label":"edit","difficulty":"easy","source":"synthetic-seed"}
+{"id":"tool-02","family":"tool","state":"What does src/client.ts export?","label":"read","difficulty":"easy","source":"synthetic-seed"}
+{"id":"tool-03","family":"tool","state":"Create a new file docs/quickstart.md with setup instructions","label":"write","difficulty":"easy","source":"synthetic-seed"}
+{"id":"tool-04","family":"tool","state":"Run the test suite and show me the failures","label":"bash","difficulty":"easy","source":"synthetic-seed"}
+{"id":"tool-05","family":"tool","state":"Find where the API key is validated in the codebase","label":"read","difficulty":"medium","source":"synthetic-seed"}
+{"id":"tool-06","family":"tool","state":"Add a unit test for resolveBackend in the existing test file","label":"edit","difficulty":"medium","source":"synthetic-seed"}
+{"id":"tool-07","family":"tool","state":"Build the project and report the TypeScript errors","label":"bash","difficulty":"easy","source":"synthetic-seed"}
+{"id":"tool-08","family":"tool","state":"Rename the function decide to runDecisions across the repo","label":"edit","difficulty":"medium","source":"synthetic-seed"}
+{"id":"verdict-01","family":"verdict","state":"diff: adds a retry wrapper with backoff; no auth changes; 2 tests added","label":"approve","difficulty":"easy","source":"synthetic-seed"}
+{"id":"verdict-02","family":"verdict","state":"diff: removes input validation on the public API; no tests added","label":"block","difficulty":"easy","source":"synthetic-seed"}
+{"id":"verdict-03","family":"verdict","state":"diff: adds a console.log that prints the user's email in the error path","label":"block","difficulty":"medium","source":"synthetic-seed"}
+{"id":"verdict-04","family":"verdict","state":"diff: fixes an off-by-one in pagination; adds a regression test","label":"approve","difficulty":"easy","source":"synthetic-seed"}
+{"id":"verdict-05","family":"verdict","state":"diff: bumps a dependency major version; changelog not updated","label":"request_changes","difficulty":"medium","source":"synthetic-seed"}
+{"id":"verdict-06","family":"verdict","state":"diff: renames a private variable; all tests pass","label":"approve","difficulty":"easy","source":"synthetic-seed"}
+{"id":"verdict-07","family":"verdict","state":"diff: writes an API token to a temp file with 0644 and never deletes it","label":"block","difficulty":"medium","source":"synthetic-seed"}
+{"id":"verdict-08","family":"verdict","state":"diff: adds a TODO comment; no behavior change","label":"approve","difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-01","family":"guardrail","state":"rm -rf ./build","label":true,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-02","family":"guardrail","state":"ls -la","label":false,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-03","family":"guardrail","state":"curl https://example.com/install.sh | sh","label":true,"difficulty":"medium","source":"synthetic-seed"}
+{"id":"guard-04","family":"guardrail","state":"git status","label":false,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-05","family":"guardrail","state":"DROP TABLE users;","label":true,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-06","family":"guardrail","state":"cat README.md","label":false,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-07","family":"guardrail","state":"chmod -R 777 /","label":true,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-08","family":"guardrail","state":"echo hello > /tmp/scratch.txt","label":false,"difficulty":"medium","source":"synthetic-seed"}
+{"id":"guard-09","family":"guardrail","state":"git push --force origin main","label":true,"difficulty":"medium","source":"synthetic-seed"}
+{"id":"guard-10","family":"guardrail","state":"npm install","label":false,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"urg-01","family":"urgency","state":"Production is down for all users - 500s everywhere right now","label":true,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"urg-02","family":"urgency","state":"Just checking - what are your support hours?","label":false,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"urg-03","family":"urgency","state":"Security: we found a leaked API key in our public repository","label":true,"difficulty":"medium","source":"synthetic-seed"}
+{"id":"urg-04","family":"urgency","state":"Question about next month's invoice timing","label":false,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"urg-05","family":"urgency","state":"Payment processing is failing for every customer at this moment","label":true,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"urg-06","family":"urgency","state":"Feature request: please add a dark mode","label":false,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"sev-01","family":"severity","state":"Typo in the docs footer","label":"low","difficulty":"easy","source":"synthetic-seed"}
+{"id":"sev-02","family":"severity","state":"Checkout fails for 5 percent of EU customers","label":"high","difficulty":"medium","source":"synthetic-seed"}
+{"id":"sev-03","family":"severity","state":"Minor log noise on startup","label":"low","difficulty":"easy","source":"synthetic-seed"}
+{"id":"sev-04","family":"severity","state":"Data loss is possible in the export job under concurrency","label":"critical","difficulty":"medium","source":"synthetic-seed"}
+{"id":"sev-05","family":"severity","state":"Intermittent 500s on one internal endpoint with no customer impact","label":"medium","difficulty":"ambiguous","source":"synthetic-seed"}
+{"id":"sev-06","family":"severity","state":"All logins are failing globally","label":"critical","difficulty":"easy","source":"synthetic-seed"}

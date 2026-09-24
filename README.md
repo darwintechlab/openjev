@@ -22,9 +22,9 @@ This plugin gives the harness five typed tools that return probabilities directl
 | Artifact | What it is | Distribution |
 |---|---|---|
 | **Plugin** (`opencode-openjev`) | JS/TS module that registers tools + handles auth/retries | `npm` package, `opencode.json: { "plugin": ["opencode-openjev"] }` → auto `bun install` from `~/.cache/opencode/node_modules/` |
-| **Skill** | Markdown prompt guidance (`SKILL.md`) | Directory copy or `skills: ["https://…"]` catalog |
+| **Skill** (`openjev`) | Markdown prompt guidance (`SKILL.md`) that makes the agent default to the typed tools | `skill/openjev/SKILL.md` — register via `skills.paths` or a skills catalog |
 
-**This repo is plugin-only** — it works with zero skill. Tools are advertised automatically via `tool()`; a thin advisory `SKILL.md` can be added later without changing the plugin.
+**The plugin works with zero skill** — tools are advertised automatically via `tool()`. The bundled `openjev` skill is optional prompt guidance that makes the agent reach for `jev_*` by default for bounded decisions (routing, guardrails, approvals, scoring) instead of generating text.
 
 ---
 
@@ -73,6 +73,18 @@ mkdir -p .opencode/plugins
 # handled automatically: .opencode/plugins/openjev.ts re-exports dist/
 ```
 
+### Enable the bundled skill (optional)
+
+`skill/openjev/SKILL.md` ships with the package and makes the agent default to
+`jev_*` for bounded decisions. Register it in `opencode.json` — relative paths
+resolve against the project directory — then restart opencode:
+
+```json
+{ "$schema": "https://opencode.ai/config.json", "skills": { "paths": ["openjev/skill"] } }
+```
+
+For a global install, copy the folder to `~/.config/opencode/skills/openjev/`.
+
 ---
 
 ## Configuration
@@ -89,6 +101,9 @@ All backends are selected via environment variables — same convention as `jev-
 | `openjev-local` | `JEV_BACKEND=openjev-local` | hook for local calibrated LLM (currently falls back to `mock`) |
 
 Optional overrides: `JEV_MODEL` (default `jev-latest`), `JEV_BASE_URL`, `JEV_BACKEND`.
+
+> **`.env` is auto-loaded.** opencode does not load `.env` into `process.env` itself (issues #10458 / #21187), so the plugin reads it at startup from, in order: `JEV_ENV_FILE`, `./.env`, `./.opencode/.env`, then the plugin's project dir. Existing shell/OS variables always win, so `export TYPESAFE_API_KEY=…` still overrides the file. Restart opencode after editing `.env`.
+
 
 **Verify wiring in the Opencode TUI:**
 
@@ -169,6 +184,7 @@ npm run build      # tsc → dist/
 npm run typecheck  # tsc --noEmit
 npm test           # node --test (mock backend, no key needed)
 JEV_BACKEND=mock npm test
+npm run bench:eval # decision-quality eval (accuracy/Brier/ECE/risk-coverage + optional LLM baseline)
 node examples/demo.mjs
 opencode debug config --print-logs  # should show "OpenJev plugin initialized"
 ```
@@ -178,11 +194,22 @@ opencode debug config --print-logs  # should show "OpenJev plugin initialized"
 ```
 src/
   client.ts   # backend resolution, validation, retries, mock, decide()
+  dotenv.ts   # zero-dep .env loader (opencode does not load .env itself)
   plugin.ts   # opencode plugin (5 tools, input parsing, logging)
 index.ts      # public entry
+skill/
+  openjev/SKILL.md   # optional: makes the agent default to jev_* tools
 test/
   client.test.mjs
   plugin.test.mjs
+  dotenv.test.mjs
+  dotenv-missing.test.mjs
+  metrics.test.mjs
+bench/
+  eval.mjs        # decision-quality eval (accuracy/calibration/risk-coverage)
+  metrics.mjs     # pure metric functions (Brier, ECE, risk-coverage, Wilson)
+  families.mjs    # decision family definitions
+  dataset.jsonl   # labeled seed cases (replace with real held-out data)
 examples/
   demo.mjs
   harness-acceleration.md

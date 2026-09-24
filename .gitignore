@@ -7,3 +7,6 @@ dist/
 .DS_Store
 coverage/
 npm-debug.log*
+
+# bench artifacts
+bench/results/

@@ -5,6 +5,8 @@
  * Context limits: ~64k total (32k state + longest question) per llmreference; we enforce 60k char soft cap.
  */
 
+import { loadDotEnv } from "./dotenv.js";
+
 export type Backend = "typesafe" | "openrouter" | "gateway" | "custom" | "mock" | "openjev-local";
 
 export type ChoiceQuestion = {
@@ -92,6 +94,7 @@ export function resolveBackend(opts: ClientOptions = {}): {
   baseURL: string;
   model: string;
 } {
+  loadDotEnv();
   const model = (opts.model ?? env("JEV_MODEL") ?? DEFAULT_MODEL).trim() || DEFAULT_MODEL;
 
   // Explicit backend wins — honour baseURL/apiKey overrides per backend type
@@ -192,13 +195,25 @@ export function validateQuestions(questions: Questions): void {
   }
 }
 
+import { smartTruncate } from "./state.js";
+
 function validateState(state: string | object | unknown[]): string {
   const asString = typeof state === "string" ? state : JSON.stringify(state);
   if (!asString.trim()) throw new Error("state must be a non-empty string or object");
   if (asString.length > MAX_STATE_CHARS) {
-    throw new Error(`state too large (${asString.length} chars, max ${MAX_STATE_CHARS}). Trim context, summarize, or split questions.`);
+    const { text, origChars } = smartTruncate(asString);
+    // Preserve safety: truncate with marker instead of hard error, but surface warning via error message prefix
+    // Caller (plugin) will log truncated warning; we return truncated text to stay within Jev limits
+    // If still too large (should not), throw
+    if (text.length > MAX_STATE_CHARS) throw new Error(`state too large (${origChars} chars, max ${MAX_STATE_CHARS}). Trim context, summarize, or split questions.`);
+    return text;
   }
   return asString;
+}
+
+export function wasStateTruncated(original: string | object | unknown[], validated: string): boolean {
+  const orig = typeof original === "string" ? original : JSON.stringify(original);
+  return orig.length !== validated.length;
 }
 
 // ---- mock ----

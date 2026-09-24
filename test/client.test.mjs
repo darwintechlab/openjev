@@ -64,9 +64,10 @@ describe("decide (mock)", () => {
   it("validates empty state", async () => {
     await assert.rejects(() => decide("", { q: { type: "noul", instructions: "is?" } }), /state must be/);
   });
-  it("validates oversized state", async () => {
+  it("truncates oversized state instead of throwing (smartTruncate)", async () => {
     const big = "x".repeat(61_000);
-    await assert.rejects(() => decide(big, { q: { type: "noul", instructions: "is?" } }), /too large/);
+    const res = await decide(big, { q: { type: "noul", instructions: "is?" } });
+    assert.equal(res.model, "mock"); // truncated and succeeded
   });
   it("returns mock model when no key", async () => {
     const res = await decide("hello", { q: { type: "noul", instructions: "is hello?" } });
