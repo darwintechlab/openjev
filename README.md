@@ -63,8 +63,8 @@ npm i opencode-openjev   # or pnpm/bun add opencode-openjev
 ### Local development
 
 ```bash
-git clone https://github.com/anomalyco/opencode-openjev.git
-cd opencode-openjev
+git clone https://github.com/darwintechlab/openjev.git
+cd openjev
 npm install
 npm run build
 npm test

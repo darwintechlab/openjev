@@ -7,11 +7,11 @@
   "author": "OpenJev Contributors",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anomalyco/opencode-openjev.git"
+    "url": "https://github.com/darwintechlab/openjev.git"
   },
-  "homepage": "https://github.com/anomalyco/opencode-openjev#readme",
+  "homepage": "https://github.com/darwintechlab/openjev#readme",
   "bugs": {
-    "url": "https://github.com/anomalyco/opencode-openjev/issues"
+    "url": "https://github.com/darwintechlab/openjev/issues"
   },
   "type": "module",
   "main": "dist/index.js",
