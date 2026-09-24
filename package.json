@@ -16,7 +16,7 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "skill", "README.md", "LICENSE"],
+  "files": ["dist", "skill", "README.md", "SETUP.md", "LICENSE"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
