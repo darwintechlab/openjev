@@ -1,6 +1,6 @@
 {
   "name": "opencode-openjev",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Typed decisions for the Opencode harness via Jev (System One) or OpenJev equivalent — Choice/Noul/Score with calibrated probabilities, no text generation",
   "keywords": [
     "opencode",
