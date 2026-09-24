@@ -8,6 +8,7 @@ Typed decisions for the Opencode harness via **Jev (System One)** or an **OpenJe
 * **License:** MIT
 * **Node:** `>=20`
 * **Opencode:** `>=1.18`
+* **Setup:** **[SETUP.md](./SETUP.md)** — 5-minute install (npm or file plugin, env, verify)
 
 ---
 
