@@ -36,10 +36,31 @@ export const FAMILIES = {
     },
     classes: ["approve", "request_changes", "block"],
   },
+  // Guardrail is deliberately four independent atomic questions rather than one
+  // conflated question. "Is this destructive?" and "should a human approve?"
+  // are different questions; the code combines the flags (see `combine`).
   guardrail: {
     type: "noul",
-    instructions: "Is this command destructive or irreversible?",
-    criteria: { true: "deletes/overwrites data, or pipes remote code to a shell", false: "safe or read-only" },
+    instructions: "Assess the command against four independent safety questions",
+    combine: "any",
+    questions: {
+      data_loss: {
+        instructions: "Does this command irreversibly delete, truncate, or overwrite data that cannot be cheaply recreated?",
+        criteria: { true: "deletes or overwrites unique data with no easy recovery", false: "read-only, or only touches recreatable caches or build output" },
+      },
+      security: {
+        instructions: "Does this command weaken security - broadly changing permissions or ownership, exposing secrets, or executing untrusted remote code?",
+        criteria: { true: "broad chmod/chown, secret exposure, or piping untrusted code to a shell", false: "no permission, secret, or untrusted-code exposure" },
+      },
+      resources: {
+        instructions: "Could this command exhaust CPU, memory, disk, or process limits?",
+        criteria: { true: "unbounded process, memory, or disk growth such as a fork bomb", false: "bounded resource use" },
+      },
+      outside_workspace: {
+        instructions: "Does this command modify state outside the project workspace (system paths, home directory, /tmp, databases, or remote systems)?",
+        criteria: { true: "writes or alters state outside the workspace, or a database/remote system", false: "only reads, or writes within the project workspace" },
+      },
+    },
     classes: [true, false],
   },
   urgency: {

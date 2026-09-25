@@ -151,3 +151,138 @@ export function percentile(arr, p) {
 export function mean(arr) {
   return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
 }
+
+/** Deterministic PRNG (mulberry32) so bootstrap results are reproducible. */
+export function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Lanczos log-gamma, so the exact test stays finite for large discordant counts.
+function logGamma(x) {
+  const c = [
+    0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059,
+    12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7,
+  ];
+  if (x < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * x)) - logGamma(1 - x);
+  x -= 1;
+  let a = c[0];
+  const t = x + 7.5;
+  for (let i = 1; i < 9; i++) a += c[i] / (x + i);
+  return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
+}
+
+function logBinomPmf(n, k, p) {
+  if (k < 0 || k > n) return -Infinity;
+  return logGamma(n + 1) - logGamma(k + 1) - logGamma(n - k + 1) + k * Math.log(p) + (n - k) * Math.log(1 - p);
+}
+
+/** Sum a set of log-probabilities without underflow. */
+function logSumExp(logs) {
+  let max = -Infinity;
+  for (const l of logs) if (l > max) max = l;
+  if (max === -Infinity) return 0;
+  let sum = 0;
+  for (const l of logs) sum += Math.exp(l - max);
+  return Math.log(sum) + max;
+}
+
+/**
+ * McNemar's test for paired correctness of two systems A and B.
+ *   a = # cases where A is correct and B is wrong
+ *   b = # cases where A is wrong and B is correct
+ * Returns the two-sided exact binomial p-value (robust at small discordant
+ * counts) plus the continuity-corrected chi-square statistic.
+ * p < 0.05 means the accuracy difference is unlikely under the null (A == B).
+ */
+export function mcnemar(predsA, predsB, labels) {
+  let a = 0;
+  let b = 0;
+  let both = 0;
+  let neither = 0;
+  for (let i = 0; i < labels.length; i++) {
+    const A = predsA[i] === labels[i];
+    const B = predsB[i] === labels[i];
+    if (A && B) both++;
+    else if (!A && !B) neither++;
+    else if (A) a++;
+    else b++;
+  }
+  const n = a + b;
+  let p = 1;
+  if (n > 0) {
+    const k = Math.min(a, b);
+    const logs = [];
+    for (let i = 0; i <= k; i++) logs.push(logBinomPmf(n, i, 0.5));
+    p = Math.min(1, 2 * Math.exp(logSumExp(logs)));
+  }
+  const chi2 = n > 0 ? (Math.abs(a - b) - 1) ** 2 / n : 0;
+  return { a, b, both, neither, n, chi2, p };
+}
+
+/**
+ * Bootstrap CI for a single accuracy. `corrects` is a boolean array.
+ * Resamples cases with replacement (deterministic via `seed`).
+ */
+export function bootstrapCI(corrects, { iters = 2000, seed = 42, alpha = 0.05 } = {}) {
+  const N = corrects.length;
+  if (!N) return { mean: 0, lo: 0, hi: 0, iters, alpha };
+  const rand = mulberry32(seed);
+  const out = new Float64Array(iters);
+  for (let t = 0; t < iters; t++) {
+    let ok = 0;
+    for (let i = 0; i < N; i++) if (corrects[Math.floor(rand() * N)]) ok++;
+    out[t] = ok / N;
+  }
+  return summarizeBootstrap(out, iters, alpha);
+}
+
+/**
+ * Paired bootstrap CI for the accuracy difference (A - B) on the same cases.
+ * Because it resamples *cases*, it respects the pairing. `pApprox` is the
+ * two-sided bootstrap p-value (mass on the wrong side of zero, doubled).
+ */
+export function pairedBootstrapDiff(predsA, predsB, labels, { iters = 2000, seed = 42, alpha = 0.05 } = {}) {
+  const N = labels.length;
+  if (!N) return { mean: 0, lo: 0, hi: 0, iters, alpha, pApprox: 1 };
+  const rand = mulberry32(seed);
+  const out = new Float64Array(iters);
+  for (let t = 0; t < iters; t++) {
+    let accA = 0;
+    let accB = 0;
+    for (let i = 0; i < N; i++) {
+      const j = Math.floor(rand() * N);
+      if (predsA[j] === labels[j]) accA++;
+      if (predsB[j] === labels[j]) accB++;
+    }
+    out[t] = (accA - accB) / N;
+  }
+  const s = summarizeBootstrap(out, iters, alpha);
+  let le = 0;
+  let ge = 0;
+  for (let t = 0; t < iters; t++) {
+    if (out[t] <= 0) le++;
+    if (out[t] >= 0) ge++;
+  }
+  return { ...s, pApprox: Math.min(1, (2 * Math.min(le, ge)) / iters) };
+}
+
+function summarizeBootstrap(out, iters, alpha) {
+  out.sort();
+  const lo = out[Math.min(iters - 1, Math.max(0, Math.floor((alpha / 2) * iters)))];
+  const hi = out[Math.min(iters - 1, Math.max(0, Math.ceil((1 - alpha / 2) * iters) - 1))];
+  let sum = 0;
+  for (let t = 0; t < iters; t++) sum += out[t];
+  return { mean: sum / iters, lo, hi, iters, alpha };
+}
+
+/** $ per 1k decisions from aggregate token usage over `n` decisions. */
+export function costPer1k(tokensIn, tokensOut, n, priceInPerM, priceOutPerM = 0) {
+  if (!n) return 0;
+  return ((tokensIn * priceInPerM + tokensOut * priceOutPerM) / 1_000_000 / n) * 1000;
+}

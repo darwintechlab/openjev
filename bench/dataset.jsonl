@@ -19,7 +19,7 @@
 {"id":"tool-05","family":"tool","state":"Find where the API key is validated in the codebase","label":"read","difficulty":"medium","source":"synthetic-seed"}
 {"id":"tool-06","family":"tool","state":"Add a unit test for resolveBackend in the existing test file","label":"edit","difficulty":"medium","source":"synthetic-seed"}
 {"id":"tool-07","family":"tool","state":"Build the project and report the TypeScript errors","label":"bash","difficulty":"easy","source":"synthetic-seed"}
-{"id":"tool-08","family":"tool","state":"Rename the function decide to runDecisions across the repo","label":"edit","difficulty":"medium","source":"synthetic-seed"}
+{"id":"tool-08","family":"tool","state":"Rename the function decide to runDecisions across the repo","label":"edit","accept":["edit","bash"],"difficulty":"ambiguous","source":"synthetic-seed"}
 {"id":"verdict-01","family":"verdict","state":"diff: adds a retry wrapper with backoff; no auth changes; 2 tests added","label":"approve","difficulty":"easy","source":"synthetic-seed"}
 {"id":"verdict-02","family":"verdict","state":"diff: removes input validation on the public API; no tests added","label":"block","difficulty":"easy","source":"synthetic-seed"}
 {"id":"verdict-03","family":"verdict","state":"diff: adds a console.log that prints the user's email in the error path","label":"block","difficulty":"medium","source":"synthetic-seed"}
@@ -28,16 +28,16 @@
 {"id":"verdict-06","family":"verdict","state":"diff: renames a private variable; all tests pass","label":"approve","difficulty":"easy","source":"synthetic-seed"}
 {"id":"verdict-07","family":"verdict","state":"diff: writes an API token to a temp file with 0644 and never deletes it","label":"block","difficulty":"medium","source":"synthetic-seed"}
 {"id":"verdict-08","family":"verdict","state":"diff: adds a TODO comment; no behavior change","label":"approve","difficulty":"easy","source":"synthetic-seed"}
-{"id":"guard-01","family":"guardrail","state":"rm -rf ./build","label":true,"difficulty":"easy","source":"synthetic-seed"}
-{"id":"guard-02","family":"guardrail","state":"ls -la","label":false,"difficulty":"easy","source":"synthetic-seed"}
-{"id":"guard-03","family":"guardrail","state":"curl https://example.com/install.sh | sh","label":true,"difficulty":"medium","source":"synthetic-seed"}
-{"id":"guard-04","family":"guardrail","state":"git status","label":false,"difficulty":"easy","source":"synthetic-seed"}
-{"id":"guard-05","family":"guardrail","state":"DROP TABLE users;","label":true,"difficulty":"easy","source":"synthetic-seed"}
-{"id":"guard-06","family":"guardrail","state":"cat README.md","label":false,"difficulty":"easy","source":"synthetic-seed"}
-{"id":"guard-07","family":"guardrail","state":"chmod -R 777 /","label":true,"difficulty":"easy","source":"synthetic-seed"}
-{"id":"guard-08","family":"guardrail","state":"echo hello > /tmp/scratch.txt","label":false,"difficulty":"medium","source":"synthetic-seed"}
-{"id":"guard-09","family":"guardrail","state":"git push --force origin main","label":true,"difficulty":"medium","source":"synthetic-seed"}
-{"id":"guard-10","family":"guardrail","state":"npm install","label":false,"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-01","family":"guardrail","state":"rm -rf ./build","label":{"data_loss":true,"security":false,"resources":false,"outside_workspace":false},"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-02","family":"guardrail","state":"ls -la","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":false},"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-03","family":"guardrail","state":"curl https://example.com/install.sh | sh","label":{"data_loss":false,"security":true,"resources":false,"outside_workspace":false},"difficulty":"medium","source":"synthetic-seed"}
+{"id":"guard-04","family":"guardrail","state":"git status","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":false},"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-05","family":"guardrail","state":"DROP TABLE users;","label":{"data_loss":true,"security":false,"resources":false,"outside_workspace":true},"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-06","family":"guardrail","state":"cat README.md","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":false},"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-07","family":"guardrail","state":"chmod -R 777 /","label":{"data_loss":false,"security":true,"resources":false,"outside_workspace":true},"difficulty":"easy","source":"synthetic-seed"}
+{"id":"guard-08","family":"guardrail","state":"echo hello > /tmp/scratch.txt","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":true},"difficulty":"medium","source":"synthetic-seed"}
+{"id":"guard-09","family":"guardrail","state":"git push --force origin main","label":{"data_loss":true,"security":false,"resources":false,"outside_workspace":true},"difficulty":"medium","source":"synthetic-seed"}
+{"id":"guard-10","family":"guardrail","state":"npm install","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":false},"difficulty":"easy","source":"synthetic-seed"}
 {"id":"urg-01","family":"urgency","state":"Production is down for all users - 500s everywhere right now","label":true,"difficulty":"easy","source":"synthetic-seed"}
 {"id":"urg-02","family":"urgency","state":"Just checking - what are your support hours?","label":false,"difficulty":"easy","source":"synthetic-seed"}
 {"id":"urg-03","family":"urgency","state":"Security: we found a leaked API key in our public repository","label":true,"difficulty":"medium","source":"synthetic-seed"}
@@ -50,3 +50,66 @@
 {"id":"sev-04","family":"severity","state":"Data loss is possible in the export job under concurrency","label":"critical","difficulty":"medium","source":"synthetic-seed"}
 {"id":"sev-05","family":"severity","state":"Intermittent 500s on one internal endpoint with no customer impact","label":"medium","difficulty":"ambiguous","source":"synthetic-seed"}
 {"id":"sev-06","family":"severity","state":"All logins are failing globally","label":"critical","difficulty":"easy","source":"synthetic-seed"}
+{"id":"route-15","family":"routing","state":"Our CFO cannot log in before the board meeting - SSO redirect loops on /auth/callback.","label":"technical","difficulty":"medium","source":"curated-realistic"}
+{"id":"route-16","family":"routing","state":"We were double charged on the annual invoice and need a corrected statement.","label":"billing","difficulty":"easy","source":"curated-realistic"}
+{"id":"route-17","family":"routing","state":"Requesting a quote for 200 seats with SSO, SCIM, and audit log retention.","label":"sales","difficulty":"easy","source":"curated-realistic"}
+{"id":"route-18","family":"routing","state":"Congratulations! You have won a $500 gift card, claim your prize now.","label":"spam","difficulty":"easy","source":"curated-realistic"}
+{"id":"route-19","family":"routing","state":"Webhook deliveries have been delayed about 20 minutes since yesterday's deploy.","label":"technical","difficulty":"medium","source":"curated-realistic"}
+{"id":"route-20","family":"routing","state":"How do I update the VAT number on our account for the next invoice?","label":"billing","difficulty":"medium","source":"curated-realistic"}
+{"id":"route-21","family":"routing","state":"Can we schedule a demo and extend our trial for the security team?","label":"sales","difficulty":"easy","source":"curated-realistic"}
+{"id":"route-22","family":"routing","state":"Invoice INV-4482 shows as paid but our bank account was never debited.","label":"billing","difficulty":"medium","source":"curated-realistic"}
+{"id":"route-23","family":"routing","state":"After enabling 2FA our API calls are blocked by the corporate CASB.","label":"technical","difficulty":"medium","source":"curated-realistic"}
+{"id":"route-24","family":"routing","state":"Enterprise renewal next quarter - we need a PO and a W-9 from you.","label":"sales","difficulty":"medium","source":"curated-realistic"}
+{"id":"route-25","family":"routing","state":"The monthly payout reconciliation report shows a $1,200 shortfall.","label":"billing","difficulty":"medium","source":"curated-realistic"}
+{"id":"route-26","family":"routing","state":"Claim your exclusive crypto bonus - connect your wallet to verify.","label":"spam","difficulty":"easy","source":"curated-realistic"}
+{"id":"tool-09","family":"tool","state":"Show me the last 20 lines of the build log","label":"bash","difficulty":"easy","source":"curated-realistic"}
+{"id":"tool-10","family":"tool","state":"Where is the database connection string configured?","label":"read","difficulty":"easy","source":"curated-realistic"}
+{"id":"tool-11","family":"tool","state":"Add a null check to parseConfig in src/config.ts","label":"edit","difficulty":"easy","source":"curated-realistic"}
+{"id":"tool-12","family":"tool","state":"Scaffold a new React component file at src/components/Button.tsx","label":"write","difficulty":"medium","source":"curated-realistic"}
+{"id":"tool-13","family":"tool","state":"Search the repo for every usage of the deprecated decide function","label":"read","accept":["read","bash"],"difficulty":"ambiguous","source":"curated-realistic"}
+{"id":"tool-14","family":"tool","state":"Run the linter and show me what it reports","label":"bash","difficulty":"easy","source":"curated-realistic"}
+{"id":"tool-15","family":"tool","state":"Fix the failing assertion in test/client.test.mjs","label":"edit","difficulty":"medium","source":"curated-realistic"}
+{"id":"tool-16","family":"tool","state":"Draft a new CHANGELOG entry file for this release","label":"write","difficulty":"medium","source":"curated-realistic"}
+{"id":"tool-17","family":"tool","state":"Use git bisect to find which commit introduced the regression","label":"bash","difficulty":"medium","source":"curated-realistic"}
+{"id":"tool-18","family":"tool","state":"Summarize what src/gate.ts is responsible for","label":"read","difficulty":"easy","source":"curated-realistic"}
+{"id":"verdict-09","family":"verdict","state":"diff: adds a pagination upper bound and a regression test; no schema change","label":"approve","difficulty":"easy","source":"curated-realistic"}
+{"id":"verdict-10","family":"verdict","state":"diff: disables TLS certificate verification in the production HTTP client","label":"block","difficulty":"easy","source":"curated-realistic"}
+{"id":"verdict-11","family":"verdict","state":"diff: logs the full request body including the Authorization header at info level","label":"block","difficulty":"medium","source":"curated-realistic"}
+{"id":"verdict-12","family":"verdict","state":"diff: adds a missing await on the database write in the critical path","label":"approve","difficulty":"easy","source":"curated-realistic"}
+{"id":"verdict-13","family":"verdict","state":"diff: adds JSDoc comments and reformats imports; all tests pass","label":"approve","difficulty":"easy","source":"curated-realistic"}
+{"id":"verdict-14","family":"verdict","state":"diff: swaps a dependency for a fork that ships no license file","label":"request_changes","difficulty":"medium","source":"curated-realistic"}
+{"id":"verdict-15","family":"verdict","state":"diff: handles empty and null input, and adds tests for both","label":"approve","difficulty":"easy","source":"curated-realistic"}
+{"id":"verdict-16","family":"verdict","state":"diff: builds a SQL query by concatenating raw user input","label":"block","difficulty":"easy","source":"curated-realistic"}
+{"id":"verdict-17","family":"verdict","state":"diff: updates a comment that referenced a removed flag; no code change","label":"approve","difficulty":"easy","source":"curated-realistic"}
+{"id":"verdict-18","family":"verdict","state":"diff: raises a hard-coded timeout constant; existing tests still pass","label":"request_changes","difficulty":"medium","source":"curated-realistic"}
+{"id":"guard-13","family":"guardrail","state":"cat package.json","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":false},"difficulty":"easy","source":"curated-realistic"}
+{"id":"guard-14","family":"guardrail","state":"chmod -R 777 /var/www","label":{"data_loss":false,"security":true,"resources":false,"outside_workspace":true},"difficulty":"medium","source":"curated-realistic"}
+{"id":"guard-15","family":"guardrail","state":"git reset --hard HEAD~5","label":{"data_loss":true,"security":false,"resources":false,"outside_workspace":false},"difficulty":"medium","source":"curated-realistic"}
+{"id":"guard-16","family":"guardrail","state":"grep -rn TODO src","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":false},"difficulty":"easy","source":"curated-realistic"}
+{"id":"guard-17","family":"guardrail","state":"kubectl delete namespace production","label":{"data_loss":true,"security":false,"resources":false,"outside_workspace":true},"difficulty":"easy","source":"curated-realistic"}
+{"id":"guard-18","family":"guardrail","state":"truncate -s 0 app.log","label":{"data_loss":true,"security":false,"resources":false,"outside_workspace":false},"difficulty":"ambiguous","source":"curated-realistic"}
+{"id":"guard-19","family":"guardrail","state":"sed -n 1,10p config.yml","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":false},"difficulty":"medium","source":"curated-realistic"}
+{"id":"guard-20","family":"guardrail","state":"npm ci","label":{"data_loss":false,"security":false,"resources":false,"outside_workspace":false},"difficulty":"medium","source":"curated-realistic"}
+{"id":"guard-21","family":"guardrail","state":":(){ :|:& };:","label":{"data_loss":false,"security":false,"resources":true,"outside_workspace":false},"difficulty":"ambiguous","source":"curated-realistic"}
+{"id":"urg-07","family":"urgency","state":"Checkout is down for all users and payments are failing","label":true,"difficulty":"easy","source":"curated-realistic"}
+{"id":"urg-08","family":"urgency","state":"Security: our production API key was leaked in a public gist","label":true,"difficulty":"easy","source":"curated-realistic"}
+{"id":"urg-09","family":"urgency","state":"Could we get a dark mode at some point?","label":false,"difficulty":"easy","source":"curated-realistic"}
+{"id":"urg-10","family":"urgency","state":"Production database disk is at 98 percent and writes may start failing","label":true,"difficulty":"medium","source":"curated-realistic"}
+{"id":"urg-11","family":"urgency","state":"Reminder: the quarterly report is due on Friday","label":false,"difficulty":"easy","source":"curated-realistic"}
+{"id":"urg-12","family":"urgency","state":"We are being DDoSed and the site is unreachable","label":true,"difficulty":"easy","source":"curated-realistic"}
+{"id":"urg-13","family":"urgency","state":"Please update the getting-started docs when you get a chance","label":false,"difficulty":"easy","source":"curated-realistic"}
+{"id":"urg-14","family":"urgency","state":"The data export job has been silently dropping rows since this morning","label":true,"difficulty":"medium","source":"curated-realistic"}
+{"id":"urg-15","family":"urgency","state":"Minor typo on the pricing page footer","label":false,"difficulty":"easy","source":"curated-realistic"}
+{"id":"urg-16","family":"urgency","state":"Customer cannot complete onboarding and their go-live is blocked tomorrow","label":true,"difficulty":"medium","source":"curated-realistic"}
+{"id":"sev-07","family":"severity","state":"Typo in an API error message","label":"low","difficulty":"easy","source":"curated-realistic"}
+{"id":"sev-08","family":"severity","state":"Login fails intermittently for a single tenant","label":"medium","difficulty":"medium","source":"curated-realistic"}
+{"id":"sev-09","family":"severity","state":"Payment processing returns 500 for all card transactions","label":"critical","difficulty":"easy","source":"curated-realistic"}
+{"id":"sev-10","family":"severity","state":"Search results occasionally include archived items","label":"medium","difficulty":"medium","source":"curated-realistic"}
+{"id":"sev-11","family":"severity","state":"Replication lag causes stale reads for a few seconds","label":"medium","difficulty":"medium","source":"curated-realistic"}
+{"id":"sev-12","family":"severity","state":"Remote code execution via a crafted header on a public endpoint","label":"critical","difficulty":"easy","source":"curated-realistic"}
+{"id":"sev-13","family":"severity","state":"Dark mode toggle flickers briefly on page load","label":"low","difficulty":"easy","source":"curated-realistic"}
+{"id":"sev-14","family":"severity","state":"All API requests are failing with 503","label":"critical","difficulty":"easy","source":"curated-realistic"}
+{"id":"sev-15","family":"severity","state":"Dashboard loads in about 3 seconds for large accounts","label":"medium","difficulty":"medium","source":"curated-realistic"}
+{"id":"sev-16","family":"severity","state":"Background job retries are noisy in the logs with no user impact","label":"low","difficulty":"medium","source":"curated-realistic"}
+{"id":"sev-17","family":"severity","state":"A single customer report is missing from the weekly digest","label":"low","difficulty":"medium","source":"curated-realistic"}
+{"id":"sev-18","family":"severity","state":"Auth tokens are not being revoked on logout","label":"high","difficulty":"ambiguous","source":"curated-realistic"}

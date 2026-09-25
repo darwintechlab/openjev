@@ -4,6 +4,9 @@ export const DEFAULT_THRESHOLDS = {
   choice: 0.75,
   noul: 0.75,
   score: 0.65,
+  // Guardrails are asymmetric: auto-allowing a dangerous command is far worse
+  // than asking, so "safe" must be very confident before we skip the prompt.
+  guardrail: 0.95,
 } as const;
 
 export type GateResult = { action: "auto"; reason: string } | { action: "escalate"; reason: string };
@@ -22,6 +25,31 @@ export function gateNoul(noul: number, threshold: number = DEFAULT_THRESHOLDS.no
 export function gateScore(confidence: number, threshold: number = DEFAULT_THRESHOLDS.score): GateResult {
   if (confidence >= threshold) return { action: "auto", reason: `score conf ${confidence.toFixed(2)} >= ${threshold}` };
   return { action: "escalate", reason: `score conf ${confidence.toFixed(2)} < ${threshold} — low certainty rubric` };
+}
+
+/**
+ * Guardrail gate — deliberately asymmetric. `noul` is P(risky). We only
+ * auto-allow when the safe side is very confident (`P(safe) >= safeThreshold`);
+ * anything else asks a human. Fail-closed by design.
+ */
+export function gateGuardrail(noul: number, safeThreshold: number = DEFAULT_THRESHOLDS.guardrail): GateResult {
+  const pSafe = 1 - noul;
+  if (pSafe >= safeThreshold) return { action: "auto", reason: `P(safe) ${pSafe.toFixed(2)} >= ${safeThreshold} — allow` };
+  return { action: "escalate", reason: `P(safe) ${pSafe.toFixed(2)} < ${safeThreshold} — ask before running` };
+}
+
+/**
+ * Combine several atomic guardrail flags (e.g. data_loss, security, resources,
+ * outside_workspace). Auto-allows only when every flag's safe side clears the
+ * threshold; the most risky flag governs.
+ */
+export function gateGuardrailFlags(
+  flags: Record<string, number> | number[],
+  safeThreshold: number = DEFAULT_THRESHOLDS.guardrail
+): GateResult {
+  const values = (Array.isArray(flags) ? flags : Object.values(flags)).filter((v) => typeof v === "number");
+  if (!values.length) return { action: "escalate", reason: "no guardrail flags supplied — ask" };
+  return gateGuardrail(Math.max(...values), safeThreshold);
 }
 
 /** Convenience: pick gate by answer type */

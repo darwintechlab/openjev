@@ -81,11 +81,14 @@ For the full walkthrough and troubleshooting, see **[SETUP.md](./SETUP.md)**.
 
 ## How accurate is it?
 
-We tested it on 52 labeled decisions ([full results](./bench/results.md)):
+We tested it on 115 labeled decisions ([full results](./bench/results.md)):
 
-* **88.5% correct overall.** That's 97% on clear cases and 71% on ambiguous ones.
-* **Confident answers are more reliable.** 80% of the pick-one decisions scored 0.75 or higher, and 96% of those were correct. The rest were flagged for review.
-* **Severity scoring is the weakest area:** 67% correct, though there were only 6 cases.
+* **89% correct overall.** That's 97% on clear cases and 77% on ambiguous ones.
+* **Confident answers are more reliable.** At a 0.75 gate, 84% of the pick-one decisions were accepted and 98% of those were correct; the top 50% by confidence were 100% correct. The rest were flagged for review.
+* **Severity scoring is the weakest area:** 61% correct (and the least stable family).
+* **Guardrails are asked as four atomic questions** (data loss, security, resources, outside workspace) and combined in code, with an asymmetric gate that auto-allows only at ≥0.95 safe confidence — that closed the "confidently wrong → auto-run" hole.
+
+Measured against a conventional LLM (`deepseek-v4.1-flash`) on the same cases, Jev was ~5 pts less accurate overall — but that gap is **entirely the `severity` family** (excluding it, the difference is not significant) — while being **~35× faster and ~48× cheaper**. See the [head-to-head](./bench/results.md#head-to-head-vs-a-conventional-llm--measured-2026-09-25).
 
 The test set is small and we wrote it ourselves, so treat these numbers as a starting point. To measure accuracy on your own workload, replace `bench/dataset.jsonl` with your own cases and run `npm run bench:eval`.
 
@@ -264,6 +267,8 @@ npm run typecheck  # tsc --noEmit
 npm test           # node --test (mock backend, no key needed)
 JEV_BACKEND=mock npm test
 npm run bench:eval # decision-quality eval (accuracy/Brier/ECE/risk-coverage + optional LLM baseline)
+# head-to-head vs a conventional LLM (any OpenAI-compatible endpoint):
+#   BASELINE_MODEL=gpt-4o-mini BASELINE_API_KEY=sk-... node bench/eval.mjs
 node examples/demo.mjs
 opencode debug config --print-logs  # should show "OpenJev plugin initialized"
 ```
@@ -287,9 +292,11 @@ test/
   dotenv.test.mjs
   dotenv-missing.test.mjs
   metrics.test.mjs
+  baseline.test.mjs
 bench/
-  eval.mjs        # decision-quality eval (accuracy/calibration/risk-coverage)
-  metrics.mjs     # pure metric functions (Brier, ECE, risk-coverage, Wilson)
+  eval.mjs        # decision-quality eval (accuracy/calibration/risk-coverage + LLM head-to-head)
+  metrics.mjs     # pure metric functions (Brier, ECE, risk-coverage, Wilson, McNemar, bootstrap)
+  baseline.mjs    # LLM prompt + answer normalization + self-consistency (pure)
   families.mjs    # decision family definitions
   dataset.jsonl   # labeled seed cases (replace with real held-out data)
 examples/
